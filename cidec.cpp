@@ -209,7 +209,7 @@ void initLights(){
 
 void init(void)
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glColor3f(0.663, 0.663, 0.663); // Cinza (concreto)
 	
 	angle=45; // angulo de visao
 	
