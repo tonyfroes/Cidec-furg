@@ -1,3 +1,4 @@
-# Cidec-furg
-Cidec opengl furg <br />
-g++ -o main cidec.cpp -lglut -lGL -lGLU -lm
+# Logo-FURG
+Logo da FURG em OpenGL <br />
+g++ -o furg furg.cpp -lglut -lGL -lGLU -lm <br />
+./furg
