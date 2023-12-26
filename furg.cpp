@@ -4,13 +4,10 @@
 
 GLfloat angle, fAspect;
 
-// usado para criar cilindros
 GLUquadric* qobj;
 
 GLfloat rotateX = 0.0f;
 GLfloat rotateY = 0.0f;
-
-
 GLfloat curvedSurface[4][4][3] = {
 
 	// curva 1
@@ -29,54 +26,6 @@ GLfloat curvedSurface[4][4][3] = {
 	{{40, 0, -15}, {40, 20, -40},
 	 {40, 70, -15}, {40, 45, 20}}
 };
-
-// void floor(float compxz, float alty){
-//   glColor3f(0.1f, 0.4f, 0.1f);
-	
-//     // Desenha varios retangulos formando uma 'parede'
-// 	glBegin(GL_QUADS);			// Face frontal
-// 		glNormal3f(0.0, 0.0, 1.0);	// Normal da face
-// 		glVertex3f(compxz/2, 0, compxz/2);
-// 		glVertex3f(-compxz/2, 0, compxz/2);
-// 		glVertex3f(-compxz/2, -alty, compxz/2);
-// 		glVertex3f(compxz/2, -alty, compxz/2);
-// 	glEnd();
-// 	glBegin(GL_QUADS);			// Face traseira
-// 		glNormal3f(0.0, 0.0, -1.0); 	// Normal da face
-// 		glVertex3f(compxz/2, 0, -compxz/2);
-// 		glVertex3f(compxz/2, -alty, -compxz/2);
-// 		glVertex3f(-compxz/2, -alty, -compxz/2);
-// 		glVertex3f(-compxz/2, 0, -compxz/2);
-// 	glEnd();
-// 	glBegin(GL_QUADS);			// Face lateral esquerda
-// 		glNormal3f(-1.0, 0.0, 0.0); 	// Normal da face
-// 		glVertex3f(-compxz/2, 0, compxz/2);
-// 		glVertex3f(-compxz/2, 0, -compxz/2);
-// 		glVertex3f(-compxz/2, -alty, -compxz/2);
-// 		glVertex3f(-compxz/2, -alty, compxz/2);
-// 	glEnd();
-// 	glBegin(GL_QUADS);			// Face lateral direita
-// 		glNormal3f(1.0, 0.0, 0.0);	// Normal da face
-// 		glVertex3f(compxz/2, 0, compxz/2);
-// 		glVertex3f(compxz/2, -alty, compxz/2);
-// 		glVertex3f(compxz/2, -alty, -compxz/2);
-// 		glVertex3f(compxz/2, 0, -compxz/2);
-// 	glEnd();
-// 	glBegin(GL_QUADS);			// Face superior
-// 		glNormal3f(0.0, 1.0, 0.0);  	// Normal da face
-// 		glVertex3f(-compxz/2, 0, -compxz/2);
-// 		glVertex3f(-compxz/2, 0, compxz/2);
-// 		glVertex3f(compxz/2, 0, compxz/2);
-// 		glVertex3f(compxz/2, 0, -compxz/2);
-// 	glEnd();
-// 	glBegin(GL_QUADS);			// Face inferior
-// 		glNormal3f(0.0, -1.0, 0.0); 	// Normal da face
-// 		glVertex3f(-compxz/2, -alty, -compxz/2);
-// 		glVertex3f(compxz/2, -alty, -compxz/2);
-// 		glVertex3f(compxz/2, -alty, compxz/2);
-// 		glVertex3f(-compxz/2, -alty, compxz/2);
-// 	glEnd();
-// }
 
 void Transposta(float matriz[4][4]){
 
@@ -102,10 +51,10 @@ void Translate(float dx, float dy, float dz) {
    glMultMatrixf((float *) matriz);
 }
 
-//Criar um retangulo com altura e largura definidas e com o centro no ponto (x,y,z) 
+
 void retangulo(float x, float y, float z, float largura, float altura) {
     Translate(x, y, z);
-	glColor3f(1.0f, 1.0f, 1.0f); // Define a cor para verde
+	glColor3f(1.0f, 1.0f, 1.0f); 
     
     glBegin(GL_QUADS);
         glVertex3f(-largura / 2, -altura / 2, 0);
@@ -113,272 +62,246 @@ void retangulo(float x, float y, float z, float largura, float altura) {
         glVertex3f(largura / 2, altura / 2, 0);
         glVertex3f(-largura / 2, altura / 2, 0);
     glEnd();
-	glPopAttrib(); // Restaura o estado anterior da cor
+	glPopAttrib(); 
 }
 
 
 void desenharSemiCirculo(float x, float y, float z, float raio, float anguloInicial, float anguloFinal) {
-    int numSegmentos = 100; // Número de segmentos para suavizar o semicírculo
+    int numSegmentos = 100; 
 
     glPushMatrix();
     glTranslatef(x, y, z);
 
-    glPushAttrib(GL_CURRENT_BIT); // Salva o estado atual da cor
-	glColor3f(1.0f, 0.5f, 0.0f); // Define a cor para laranja
+    glPushAttrib(GL_CURRENT_BIT); 
+	glColor3f(1.0f, 0.5f, 0.0f); 
 
 
     glBegin(GL_TRIANGLE_FAN);
 
-    // Centro do semicírculo
     glVertex3f(x, y, z);
 
-    // Desenhar o semicírculo usando os vértices de um círculo
     for (int i = 0; i <= numSegmentos; ++i) {
         float angulo = anguloInicial + (i * (anguloFinal - anguloInicial) / numSegmentos);
-        float xBorda = x + (raio / 2) * cos(angulo);
+        float xBorda = x + (raio/0.9) * cos(angulo);
         float yBorda = y + (raio / 2) * sin(angulo);
         glVertex3f(xBorda, yBorda, z);
     }
 
     glEnd();
-    glPopAttrib(); // Restaura o estado anterior da cor
+    glPopAttrib(); 
     glPopMatrix();
 }
 
 void desenharSemiCirculoDireita(float x, float y, float z, float raio, float anguloInicial, float anguloFinal) {
-    int numSegmentos = 100; // Número de segmentos para suavizar o semicírculo
+    int numSegmentos = 100;
 
     glPushMatrix();
     glTranslatef(x, y, z);
 
-    glPushAttrib(GL_CURRENT_BIT); // Salva o estado atual da cor
-    glColor3f(1.0f, 0.5f, 0.0f); // Cor laranja para o semicírculo superior
-
     glBegin(GL_TRIANGLE_FAN);
 
-    // Centro do semicírculo na parte inferior
     glVertex3f(x, y - raio, z);
 
-    // Desenhar o semicírculo usando os vértices de um círculo
     for (int i = 0; i <= numSegmentos; ++i) {
         float angulo = anguloInicial + (i * (anguloFinal - anguloInicial) / numSegmentos);
-        float xBorda = x + (raio / 2) * cos(angulo);
+        float xBorda = x + (raio / 0.9) * cos(angulo);
         float yBorda = (y - raio) + (raio / 2) * sin(angulo);
         glVertex3f(xBorda, yBorda, z);
     }
 
     glEnd();
-    glPopAttrib(); // Restaura o estado anterior da cor
     glPopMatrix();
 }
 
 void desenharSemiCirculoEmbaixo(float x, float y, float z, float raio, float anguloInicial, float anguloFinal) {
-    int numSegmentos = 100; // Número de segmentos para suavizar o semicírculo
+    int numSegmentos = 100;
 
     glPushMatrix();
     glTranslatef(x, y, z);
 
-    glPushAttrib(GL_CURRENT_BIT); // Salva o estado atual da cor
-    glColor3f(1.0f, 0.5f, 0.0f); // Cor laranja para o semicírculo superior
+    glPushAttrib(GL_CURRENT_BIT); 
+    glColor3f(1.0f, 0.5f, 0.0f); 
 
     glBegin(GL_TRIANGLE_FAN);
 
-    // Centro do semicírculo na parte inferior
     glVertex3f(x, y - raio, z);
 
-    // Desenhar o semicírculo usando os vértices de um círculo
+
     for (int i = 0; i <= numSegmentos; ++i) {
         float angulo = anguloInicial + (i * (anguloFinal - anguloInicial) / numSegmentos);
-        float xBorda = x + (raio / 2) * cos(angulo);
+        float xBorda = x + (raio / 0.9) * cos(angulo);
         float yBorda = (y - raio) + (raio / 2) * sin(angulo);
         glVertex3f(xBorda, yBorda, z);
     }
 
     glEnd();
-    glPopAttrib(); // Restaura o estado anterior da cor
+    glPopAttrib(); 
     glPopMatrix();
 }
 
-void desenharRetangulo(float x, float y, float z, float largura, float altura) {
+void desenharSemiCirculoCima(float x, float y, float z, float raio, float anguloInicial, float anguloFinal, GLfloat cor[3]) {
+    int numSegmentos = 100; 
+
     glPushMatrix();
     glTranslatef(x, y, z);
 
-    glBegin(GL_QUADS);
-    glVertex3f(0, 0, 0);                // Canto inferior esquerdo
-    glVertex3f(largura, 0, 0);          // Canto inferior direito
-    glVertex3f(largura, altura, 0);     // Canto superior direito
-    glVertex3f(0, altura, 0);           // Canto superior esquerdo
+    glColor3fv(cor); 
+
+
+    glBegin(GL_TRIANGLE_FAN);
+
+    glVertex3f(x, y - raio, z);
+
+    for (int i = 0; i <= numSegmentos; ++i) {
+        float angulo = anguloInicial + (i * (anguloFinal - anguloInicial) / numSegmentos);
+        float xBorda = x + (raio / 0.9) * cos(angulo);
+        float yBorda = (y - raio) + (raio / 2) * sin(angulo);
+        glVertex3f(xBorda, yBorda, z);
+    }
+
+    glEnd();
+    glPopAttrib(); 
+    glPopMatrix();
+}
+
+void desenharTrianguloRetangulo(float x, float y, float z, float largura, float altura, GLfloat cor[3]) {
+    glPushMatrix();
+    glTranslatef(x, y, z);
+
+    glColor3fv(cor); 
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(0, 0, 0);                
+    glVertex3f(largura, 0, 0);          
+    glVertex3f(largura, altura, 0);     
     glEnd();
 
     glPopMatrix();
 }
+
+void desenharTrianguloRetanguloInvertido(float x, float y, float z, float largura, float altura, GLfloat cor[3]) {
+    glPushMatrix();
+    glTranslatef(x, y, z);
+
+    glColor3fv(cor);
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(0, 0, 0);     
+    glVertex3f(largura, 0, 0);    
+    glVertex3f(0, altura, 0);  
+    glEnd();
+
+    glPopMatrix();
+}
+
+
+void desenharRetangulo(float x, float y, float z, float largura, float altura, GLfloat cor[3]) {
+    glPushMatrix();
+    glTranslatef(x, y, z);
+
+    glColor3fv(cor); 
+
+    glBegin(GL_QUADS);
+    glVertex3f(0, 0, 0);                
+    glVertex3f(largura, 0, 0);          
+    glVertex3f(largura, altura, 0);     
+    glVertex3f(0, altura, 0);           
+    glEnd();
+
+    glPopMatrix();
+}
+
 
 
 
 
 void display(void) {
+    GLfloat corAmarela[] = {1.0f, 1.0f, 0.0f};
+    GLfloat corVermelha[] = {1.0f, 0.0f, 0.0f};
+    GLfloat corLaranja[] = {0.8f, 0.5f, 0.0f};
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glEnable(GL_DEPTH_TEST); // Habilita o Z-buffer
+    glEnable(GL_DEPTH_TEST); 
 
     glLoadIdentity();
-    gluLookAt(0, 80, 250, 0, 0, 0, 0, 1, 0); // Defina sua visão
+    gluLookAt(0, 80, 250, 0, 0, 0, 0, 1, 0); 
 
-    glRotatef(rotateX, 1.0f, 0.0f, 0.0f); // Rotação em x
-    glRotatef(rotateY, 0.0f, 1.0f, 0.0f); // Rotação em y
+    glRotatef(rotateX, 1.0f, 0.0f, 0.0f);
+    glRotatef(rotateY, 0.0f, 1.0f, 0.0f); 
 
-    glColor3f(0.0f, 1.0f, 0.0f); // Cor verde para o retângulo
+    glColor3f(0.0f, 1.0f, 0.0f); 
     retangulo(0, 0, 0, 150, 150);
 
-    glColor3f(1.0f, 0.5f, 0.0f); // Cor laranja para o semicírculo superior
+    glColor3f(1.0f, 0.5f, 0.0f); 
     glPushMatrix();
-    glRotatef(90, 0.0f, 0.0f, 1.0f); // Rotação para posicionar na lateral esquerda
-    desenharSemiCirculo(0, 20, 0.1, 70, 3.13, 0); // Desenha o semicírculo superior
+    glRotatef(90, 0.0f, 0.0f, 1.0f); 
+    desenharSemiCirculo(4, 18, 0.1, 31, 3.13, 0); 
     glPopMatrix();
 
-    glColor3f(1.0f, 0.5f, 0.0f); // Cor laranja para o semicírculo superior
+    glColor3f(1.0f, 0.5f, 0.0f); 
     glPushMatrix();
-    // glTranslatef(0, -20, 0); // Translada para a posição inferior
-	glTranslatef(110, 0, 0); // Translada para a posição à direita
-    glRotatef(90, 0.0f, 0.0f, -1.0f); // Rotação no semicírculo inferior
-    desenharSemiCirculoDireita(0, 0, 0.1, 70, 3.13, 0); // Desenha o semicírculo na parte inferior
+
+	glTranslatef(110, 0, 0); 
+    glRotatef(90, 0.0f, 0.0f, -1.0f); 
+    
+    desenharSemiCirculoDireita(-4, -21, 0.1, 31, 3.13, 0);
     glPopMatrix();
 
-	glColor3f(0.0f, 0.0f, 1.0f); // Cor azul para o semicírculo na parte inferior
+	glColor3f(0.0f, 0.0f, 1.0f); 
     glPushMatrix();
-    glTranslatef(0, 0, 0); // Translada para a posição inferior
-    glRotatef(-179, 0.0f, 0.0f, 1.0f); // Rotação no semicírculo inferior
-    desenharSemiCirculoEmbaixo(0, 55, 0.1, 70, 3.13, 0); // Desenha o semicírculo na parte inferior
+    glTranslatef(0, 0, 0); 
+    glRotatef(-179, 0.0f, 0.0f, 1.0f); 
+    desenharSemiCirculoEmbaixo(0, 31, 0.1, 27, 3.13, 0);
     glPopMatrix();
 	
-	//EMBAIXO
-	glPushMatrix();
-    glTranslatef(-30, -30, 0); // Translada para a posição inferior
-	desenharRetangulo(0, 0, 0.1, 60, 10);
+    glPushMatrix();
+    glTranslatef(0, 0, 0);
+    glRotatef(0.0f, 0.0f, 0.0f, 1.0f); 
+    desenharSemiCirculoCima(0, 33, 0.1, 13, 3.13, 0, corAmarela); 
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0, 0, 0); 
+	desenharTrianguloRetangulo(-30, 45, 0.1, 10, 5, corVermelha);
 	glPopMatrix();
 
-	//DIREITA
-	glPushMatrix();
-	glTranslatef(30,-30, 0); // Translada para a posição inferior
-	glRotatef(90, 0.0f, 0.0f, 1.0f); // Rotação no semicírculo inferior
-	desenharRetangulo(0, 0, 0.1, 60, 10);
+    glPushMatrix();
+    glTranslatef(0, 0, 0);
+    glRotatef(0.0f, 0.0f, 0.0f, 1.0f); 
+	desenharTrianguloRetanguloInvertido(20, 45, 0.1, 10, 5, corVermelha);
 	glPopMatrix();
 
-	//ESQUERDA
 	glPushMatrix();
-	glTranslatef(-20,-30, 0); // Translada para a posição inferior
-	glRotatef(90, 0.0f, 0.0f, 1.0f); // Rotação no semicírculo inferior
-	desenharRetangulo(0, 0, 0.1, 60, 10);
+    glTranslatef(-30, -30, 0); 
+	desenharRetangulo(0, 0, 0.1, 60, 10, corVermelha);
 	glPopMatrix();
 
-	//CENTRO
 	glPushMatrix();
-	glTranslatef(15, -15, 0); // Translada para a posição inferior
-	glRotatef(90, 0.0f, 0.0f, 1.0f); // Rotação no semicírculo inferior
-	desenharRetangulo(0, 0, 0.1, 70, 30);
+	glTranslatef(30,-30, 0); 
+	glRotatef(90, 0.0f, 0.0f, 1.0f); 
+	desenharRetangulo(0, 0, 0.1, 75, 10, corVermelha);
 	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-20,-30, 0); 
+	glRotatef(90, 0.0f, 0.0f, 1.0f); 
+	desenharRetangulo(0, 0, 0.1, 75, 10, corVermelha);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(15, -15, 0);
+	glRotatef(90, 0.0f, 0.0f, 1.0f);
+	desenharRetangulo(0, 0, 0.1, 70, 30, corAmarela);
+	glPopMatrix();
+
+
 
 
     glutSwapBuffers();
 }
 
-// ESTICAR
-// void display(void) {
-//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//     glEnable(GL_DEPTH_TEST); // Habilita o Z-buffer
-
-//     glLoadIdentity();
-//     gluLookAt(0, 80, 250, 0, 0, 0, 0, 1, 0); // Defina sua visão
-
-//     glRotatef(rotateX, 1.0f, 0.0f, 0.0f); // Rotação em x
-//     glRotatef(rotateY, 0.0f, 1.0f, 0.0f); // Rotação em y
-
-//     glColor3f(0.0f, 1.0f, 0.0f); // Cor verde para o retângulo
-//     retangulo(0, 0, 0, 132, 100);
-
-//     glColor3f(1.0f, 0.5f, 0.0f); // Cor laranja para o semicírculo superior
-//     glPushMatrix();
-//     glRotatef(90, 0.0f, 0.0f, 1.0f); // Rotação para posicionar na lateral esquerda
-//     desenharSemiCirculo(0, 20, 0.1, 70, 3.13, 0); // Desenha o semicírculo superior
-//     glPopMatrix();
-
-//     glColor3f(1.0f, 0.5f, 0.0f); // Cor laranja para o semicírculo superior
-//     glPushMatrix();
-//     // glTranslatef(0, -20, 0); // Translada para a posição inferior
-//     glTranslatef(100, 0, 0); // Translada para a posição à direita
-//     glRotatef(90, 0.0f, 0.0f, -1.0f); // Rotação no semicírculo inferior
-//     desenharSemiCirculoDireita(0, 0, 0.1, 70, 3.13, 0); // Desenha o semicírculo na parte inferior
-//     glPopMatrix();
-
-//     glColor3f(1.0f, 0.5f, 0.0f); // Cor laranja para o semicírculo inferior
-//     glPushMatrix();
-//     // glTranslatef(0, -20, 0); // Translada para a posição inferior
-//     glTranslatef(0, -20, 0); // Translada para a posição inferior
-//     glRotatef(90, 0.0f, 0.0f, -1.0f); // Rotação no semicírculo inferior
-//     desenharSemiCirculoEmbaixo(0, 0, 0.1, 90, 50, 3.13, 0); // Desenha o semicírculo na parte inferior
-//     glPopMatrix();
-
-//     glutSwapBuffers();
-// }
-
-
-
-// void display(void) {
-//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//     glEnable(GL_DEPTH_TEST); // Habilita o Z-buffer
-
-//     glLoadIdentity();
-//     gluLookAt(0, 80, 250, 0, 0, 0, 0, 1, 0); // Defina sua visão
-
-//     glRotatef(rotateX, 1.0f, 0.0f, 0.0f); // Rotação em x
-//     glRotatef(rotateY, 0.0f, 1.0f, 0.0f); // Rotação em y
-
-//     glColor3f(0.0f, 1.0f, 0.0f); // Cor verde para o retângulo
-//     retangulo(0, 0, 0, 132, 100);
-
-//     glColor3f(1.0f, 0.5f, 0.0f); // Cor laranja para o semicírculo
-//     glPushMatrix();
-//     glRotatef(90, 0.0f, 0.0f, 1.0f); // Rotação para posicionar na lateral esquerda
-//     desenharSemiCirculo(20, 0, 0.1, 70, 3.13, 0); // Desenha o semicírculo na lateral esquerda
-//     glPopMatrix(); // Restaura a matriz de rotação
-
-//     glColor3f(0.0f, 0.0f, 1.0f); // Cor azul para o semicírculo na parte inferior
-//     glPushMatrix();
-//     //glTranslatef(0, -20, 0); // Move o desenho do semicírculo na parte inferior
-//     desenharSemiCirculoEmbaixo(0, 0, 0.1, 70, 3.13, 0); // Desenha o semicírculo na parte inferior
-//     glPopMatrix();
-
-//     glutSwapBuffers();
-// }
-
-
-
-
-
-
-
-
-// void rotate(int opcao){
-
-// 	switch (opcao) {
-// 		case 1: // em x
-// 			glRotatef(2.0, 1.0, 0.0, 0.0);
-// 			break;
-// 		case (-1): // em -x
-// 			glRotatef(-2.0, 1.0, 0.0, 0.0);
-// 			break;
-// 		case 2: // em y
-// 			glRotatef(2.0, 0.0, 1.0, 0.0);
-// 			break;
-// 		case (-2): // em -y
-// 			glRotatef(-2.0, 0.0, 1.0, 0.0);						
-// 			break;
-// 	}
-
-//     glutPostRedisplay();
-// }
 void rotate(int opcao){
     switch (opcao) {
         case 1: // em x
@@ -400,40 +323,32 @@ void rotate(int opcao){
 
 void EspecificaParametrosVisualizacao(void)
 {
-	// Especifica sistema de coordenadas de projeção
 	glMatrixMode(GL_PROJECTION);
-	// Inicializa sistema de coordenadas de projeção
 	glLoadIdentity();
 
-	// Especifica a projeção perspectiva
 	gluPerspective(angle,fAspect,0.4,500);
 
-	// Especifica sistema de coordenadas do modelo
 	glMatrixMode(GL_MODELVIEW);
-	// Inicializa sistema de coordenadas do modelo
+
 	glLoadIdentity();
 
-	// Especifica posição do observador e do alvo
-	gluLookAt(0,80,250, 0,0,0, 0,1,0); // 1º,2º,3º -> coordenadas do observador | 4º,5º,6º -> coordenadas do alvo | 7º,8º,9º -> vetor UP, estabelece o 'lado de cima'
+	gluLookAt(0,80,250, 0,0,0, 0,1,0); 
 }
-
-
-
 
 void keyboard(unsigned char key, int x, int y)
 {
     int hor, ver;
-    hor = 0; ver = 0; // horizontal e vertical
+    hor = 0; ver = 0; 
 
     switch (key) {
         case 27:
             exit(0);
             break;
         case 'l':
-            glDisable(GL_LIGHTING); // desabilita iluminação
+            glDisable(GL_LIGHTING); 
             break;
         case 'f':
-            glEnable(GL_LIGHTING); // habilita iluminação
+            glEnable(GL_LIGHTING); 
             break;
         case 'r':
         EspecificaParametrosVisualizacao();
@@ -446,19 +361,19 @@ void keyboard(unsigned char key, int x, int y)
 void SpecialKeyboard(int key, int x, int y)
 {
     if(key == GLUT_KEY_UP) {
-		rotate(1); // Seta para cima rotaciona em x
+		rotate(1); 
     }
     else if(key == GLUT_KEY_DOWN) {
-		rotate(-1); // Seta para baixo rotaciona em -x
+		rotate(-1); 
     }
 	else if(key == GLUT_KEY_RIGHT) {
-		rotate(2); // Seta para direita rotaciona em y
+		rotate(2); 
     }
 	else if(key == GLUT_KEY_LEFT) {
-		rotate(-2); // seta para esquerda rotaciona em -y
+		rotate(-2); 
     }
 	
-    glutPostRedisplay(); // redesenha a cena
+    glutPostRedisplay(); 
 }
 
 
@@ -466,75 +381,59 @@ void SpecialKeyboard(int key, int x, int y)
 
 void initLights(){
 	GLfloat ambientLight[4]={0.2,0.2,0.2,1.0}; 
-	GLfloat luzDifusa[4]={0.7,0.7,0.7,-.2}; // "cor"
-	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};// "brilho" 
-	GLfloat posicaoLuz[4]={0.0, -100.0, 250.0, 1.0}; // "posição"  
+	GLfloat luzDifusa[4]={0.7,0.7,0.7,-.2}; 
+	GLfloat luzEspecular[4]={1.0, 1.0, 1.0, 1.0};
+	GLfloat posicaoLuz[4]={0.0, -100.0, 250.0, 1.0}; 
 
-	// Capacidade de brilho do material
+
 	GLfloat especularidade[4]={1.0,1.0,1.0,1.0}; 
 	GLint especMaterial = 60;    
-	// Define a refletância do material 
+
 	glMaterialfv(GL_FRONT,GL_SPECULAR, especularidade);
-	// Define a concentração do brilho
+
 	glMateriali(GL_FRONT,GL_SHININESS,especMaterial); 
 	GLfloat mat_transparent[] = { 0.0, 0.8, 0.8, 0.6 };
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent); 
 
-	// Define os parâmetros da luz de número 0
-	//glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight); // melhor SEM
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa );
 	glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular );
 	glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz );    
 
-	// Habilita a definição da cor do material a partir da cor corrente
 	glEnable(GL_COLOR_MATERIAL);
-	//Habilita o uso de iluminação
+
 	glEnable(GL_LIGHTING);  
-	// Habilita a luz de número 0
+
 	glEnable(GL_LIGHT0);	
-    // Habilita o MultiSampling Anti-Aliasing
+
     glEnable(GL_MULTISAMPLE_ARB);	
 }
 
 
 void init(void)
 {
-	//lColor3f(0.663, 0.663, 0.663); // Cinza (concreto)
 	
-	angle=45; // angulo de visao
+	angle=45;
 	
-	//glMap2f( type of value generated, 0, 1, number of floats inside [0][0], dimension of array in 'u' axis,
-	// 0, 1, number of floats in [0], dimension of array in 'v' axis, pointer to array )
 	glMap2f(GL_MAP2_VERTEX_3, 0, 1, 3, 4,
 			0, 1, 12, 4, &curvedSurface[0][0][0]);		
-	// cria vertex do curvedSurface
+
 	glEnable(GL_MAP2_VERTEX_3);
 
-	// preenchimento da superficie curva
 	glMapGrid2f(20, 0.0, 1.0, 20, 0.0, 1.0);
 	glShadeModel(GL_SMOOTH);
 
-	// cria quadradric usado para criar cilindros
-	// qobj = gluNewQuadric();
-  	// gluQuadricNormals(qobj, GLU_SMOOTH);
-
-	// inicia configurações de iluminação
 	initLights();
 
-	// configura buffer de profundidade
 	glEnable(GL_DEPTH_TEST);
 }
 
 
 void reshape(int w, int h)
 {
-	// Para previnir uma divisão por zero
 	if ( h == 0 ) h = 1;
 
-	// Especifica o tamanho da viewport
 	glViewport(0, 0, w, h);
  
-	// Calcula a correção de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
 
 	EspecificaParametrosVisualizacao();
