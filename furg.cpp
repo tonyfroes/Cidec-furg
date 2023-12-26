@@ -5,31 +5,10 @@
 // Variáveis globais para controle da rotação
 GLfloat angle, fAspect; 
 
-// Objeto Quadric usado para renderização
-GLUquadric* qobj;
 
 // Variáveis de rotação
 GLfloat rotateX = 0.0f;
 GLfloat rotateY = 0.0f;
-
-// Definição de uma superfície curva
-GLfloat curvedSurface[4][4][3] = {
-    // curva 1
-    {{-40, 0, -15}, {-40, 20, -40},
-    {-40, 70, -15}, {-40, 45, 20}}, 
-
-    // curva 2
-    {{-40, 0, -15}, {-40, 20, -40},
-    {-40, 70, -15}, {-40, 45, 20}},
-
-    // curva 3
-    {{40, 0, -15}, {40, 20, -40},
-    {40, 70, -15}, {40, 45, 20}},
-
-    // curva 4
-    {{40, 0, -15}, {40, 20, -40},
-    {40, 70, -15}, {40, 45, 20}}
-};
 
 // Função para calcular a transposta de uma matriz 4x4
 void Transposta(float matriz[4][4]) {
@@ -219,10 +198,7 @@ void desenharRetangulo(float x, float y, float z, float largura, float altura, G
     glPopMatrix();
 }
 
-
-
-
-// Função para desenhar a cena
+// Função para desenhar a logo
 void display(void) {
     GLfloat corAmarela[] = {1.0f, 1.0f, 0.0f};
     GLfloat corVermelha[] = {1.0f, 0.0f, 0.0f};
@@ -303,7 +279,6 @@ void display(void) {
 	desenharRetangulo(0, 0, 0.1, 70, 30, corAmarela);
 	glPopMatrix();
 
-    // Desenha a superfície curva
     glutSwapBuffers();
 }
 
@@ -420,8 +395,6 @@ void init(void)
 	
 	angle=45; // angulo de visão da camera
 	
-	glMap2f(GL_MAP2_VERTEX_3, 0, 1, 3, 4, // define a superfície
-			0, 1, 12, 4, &curvedSurface[0][0][0]);
 
 	glEnable(GL_MAP2_VERTEX_3); // habilita o uso da superfície
 
